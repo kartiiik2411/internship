@@ -1,0 +1,26 @@
+# KARTIK DESHMUKH, UNID: UMIP273779
+import streamlit as st
+import pickle
+from sklearn.feature_extraction.text import TfidfVectorizer
+
+# Load trained model & vectorizer
+model = pickle.load(open("model.pkl", "rb"))
+vectorizer = pickle.load(open("vectorizer.pkl", "rb"))
+
+# Streamlit UI
+st.title("Financial Tweet Classifier")
+st.write("Enter a financial tweet below and get its category prediction!")
+
+# Input box for user to enter a tweet
+user_input = st.text_area("Enter a tweet:")
+
+if st.button("Predict"):
+    transformed_input = vectorizer.transform([user_input])
+    prediction = model.predict(transformed_input)[0]
+
+    # Category Mapping (Modify based on your labels)
+    category_map = {0: "Stock Movement", 1: "Earnings", 2: "Regulations"}
+    predicted_label = category_map.get(prediction, "Unknown Category")
+
+    st.success(f"Predicted Category: **{predicted_label}**")
+ChatGPT said:
